@@ -1,5 +1,5 @@
 help([[
-Build environment for GFS utilities on Hera
+Build environment for GFS utilities in a container 
 ]])
 
 prepend_path("MODULEPATH", "/opt/spack-stack/spack-stack-1.8.0/envs/unified-env/install/modulefiles/Core")
@@ -14,4 +14,4 @@ load(pathJoin("cmake", cmake_ver))
 
 load("gfsutils_generic")
 
-whatis("Description: GFS utilities environment on Hera with Intel Compilers")
+whatis("Description: GFS utilities environment in container with Intel Compilers")
