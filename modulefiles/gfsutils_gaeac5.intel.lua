@@ -3,7 +3,7 @@ help([[
   on the NOAA RDHPC machine Gaea C5 using Intel-2023.1.0.
 ]])
 
-whatis([===[Loads libraries needed for building the UFS Weather Model on Gaea ]===])
+whatis([===[Loads libraries needed for building the UFS Weather Model on Gaea C5]===])
 
 prepend_path("MODULEPATH", "/ncrc/proj/epic/spack-stack/spack-stack-1.6.0/envs/unified-env/install/modulefiles/Core")
 prepend_path("MODULEPATH", "/ncrc/proj/epic/spack-stack/spack-stack-1.6.0/envs/gsi-addon-dev/install/modulefiles/Core")
@@ -29,4 +29,4 @@ unload("cray-libsci")
 setenv("CC","cc")
 setenv("CXX","CC")
 setenv("FC","ftn")
-setenv("CMAKE_Platform","gaea.intel")
+setenv("CMAKE_Platform","gaeac5.intel")
