@@ -42,7 +42,11 @@ elif [[ ${MACHINE_ID} == wcoss2 ]]; then
 elif [[ ${MACHINE_ID} == container ]] ; then
     # We are in a container
     # Always source the lmod init script to override the system module paths and instead use the container modules
-    source /usr/lmod/lmod/init/bash
+    if [[ ${COMPILER} == gnu ]] ; then
+        source /opt/ohpc/admin/lmod/lmod/init/bash
+    else
+        source /usr/lmod/lmod/init/bash
+    fi
     module purge
 
 elif [[ ${MACHINE_ID} == gaeac6 ]]; then

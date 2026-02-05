@@ -1777,7 +1777,8 @@
 
      !Mask: The regridded soil increments have 0 values where mask=non-land/snow
      apply_increments_mask = .false.
-     where((soiltype .gt. 0) .and. (soiltype .le. 30) .and. (vegtype .ne. lnd_ice) .and. (.not.(tile_data%sheleg(istart:iend) .gt. 0.001)) )
+     where((soiltype .gt. 0) .and. (soiltype .le. 30) .and. (vegtype .ne. lnd_ice) .and. &
+           (.not.(tile_data%sheleg(istart:iend) .gt. 0.001)) )
        apply_increments_mask = .true.
      end where
 
@@ -1786,24 +1787,28 @@
        slc_updated = .false.   !Note stc_updated is tracked through stc_inc > 0
        
        !skip background frozen cells for slc update
-       where(apply_increments_mask .and. tile_data%stc(istart:iend,k) .ge. con_t0c .and. tile_data%smc(istart:iend,k) - tile_data%slc(istart:iend,k) .le. 0.001)
+       where(apply_increments_mask .and. tile_data%stc(istart:iend,k) .ge. con_t0c .and. &
+             tile_data%smc(istart:iend,k) - tile_data%slc(istart:iend,k) .le. 0.001)
         tile_data%slc(istart:iend,k) = max(tile_data%slc(istart:iend,k) + reshape(slc_inc(i,k,:,:), (/itile*jtile/)), 0.0) !ensure >=0
         tile_data%smc(istart:iend,k) = max(tile_data%smc(istart:iend,k) + reshape(slc_inc(i,k,:,:), (/itile*jtile/)), 0.0)
         slc_updated = .true.
        end where
        
-       where(apply_increments_mask) tile_data%stc(istart:iend,k) = tile_data%stc(istart:iend,k) + reshape(stc_inc(i,k,:,:), (/itile*jtile/))
+       where(apply_increments_mask) tile_data%stc(istart:iend,k) = tile_data%stc(istart:iend,k) &
+                                                                 + reshape(stc_inc(i,k,:,:), (/itile*jtile/))
 
        !recompute supercool liquid water,smc_anl remain unchanged
        !processing only locations with stc change (non-zero increments)
-       where(apply_increments_mask .and. abs(reshape(stc_inc(i,k,:,:), (/itile*jtile/))) .gt. 0.0001 .and. tile_data%stc(istart:iend,k) .lt. con_t0c )
+       where(apply_increments_mask .and. abs(reshape(stc_inc(i,k,:,:), (/itile*jtile/))) .gt. 0.0001 .and. &
+             tile_data%stc(istart:iend,k) .lt. con_t0c )
         smp = con_hfus*(con_t0c-tile_data%stc(istart:iend,k))/(con_g*tile_data%stc(istart:iend,k)) !(m)
         slc_new = maxsmc(soiltype)*(smp/satpsi(soiltype))**(-1./bb(soiltype))
         tile_data%slc(istart:iend,k) = max( min(slc_new, tile_data%smc(istart:iend,k)), 0.0 )
        end where
 
        !if temp > tfreeze, melt all soil ice (if any). Use updated stc, not background
-       where(apply_increments_mask .and. abs(reshape(stc_inc(i,k,:,:), (/itile*jtile/))) .gt. 0.0001 .and. tile_data%stc(istart:iend,k) .ge. con_t0c )
+       where(apply_increments_mask .and. abs(reshape(stc_inc(i,k,:,:), (/itile*jtile/))) .gt. 0.0001 .and. &
+             tile_data%stc(istart:iend,k) .ge. con_t0c )
          tile_data%slc(istart:iend,k) = tile_data%smc(istart:iend,k)
        end where
 

@@ -26,6 +26,7 @@ SUBROUTINE CALPRECIPTYPE(kdt,nrcm,im,ix,lm,lp1,randomno,      &
 !      use rqstfld_mod
       USE FUNCPHYS, ONLY : gfuncphys,fpvs,ftdp,fpkap,ftlcl,stma,fthe
       USE PHYSCONS
+      use, intrinsic :: iso_fortran_env, only: sp=>real32, dp=>real64
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       implicit none
 !
@@ -132,7 +133,7 @@ SUBROUTINE CALPRECIPTYPE(kdt,nrcm,im,ix,lm,lp1,randomno,      &
 ! end debug print statement		
 
         CALL CALWXT(lm,lp1,T8(1),Q(1),PMID(1),PINT(1),PREC(i),  &
-                    PTHRESH,con_fvirt,con_rog,con_epsq,   &
+                    PTHRESH,real(con_fvirt,sp),real(con_rog,sp),real(con_epsq,sp),   &
                     ZINT(1),IWX1,TWET8(1))
         IWX       = IWX1
         ISNO      = MOD(IWX,2)
@@ -167,7 +168,7 @@ SUBROUTINE CALPRECIPTYPE(kdt,nrcm,im,ix,lm,lp1,randomno,      &
         RAIN(2)   = IRAIN*1.0
 !        print *, 'inside calprecip after ramer iwx=',iwx
 ! BOURGOUIN ALGORITHM
-        CALL CALWXT_BOURG(LM,LP1,randomno(i,1),con_g,PTHRESH,                  &
+        CALL CALWXT_BOURG(LM,LP1,randomno(i,1),real(con_g,sp),PTHRESH,                  &
      &                    T8(1),Q(1),PMID(1),PINT(1),PREC(i),ZINT(1),IWX3)
 
 !
@@ -184,7 +185,8 @@ SUBROUTINE CALPRECIPTYPE(kdt,nrcm,im,ix,lm,lp1,randomno,      &
 
 ! REVISED NCEP ALGORITHM
         CALL CALWXT_REVISED(LM,LP1,T8(1),Q(1),PMID(1),PINT(1),PREC(i),PTHRESH,  &
-                            con_fvirt,con_rog,con_epsq,ZINT(1),TWET8(1),IWX4)
+       &                    real(con_fvirt,sp),real(con_rog,sp),real(con_epsq,sp), &
+       &                    ZINT(1),TWET8(1),IWX4)
 
 !
         IWX       = IWX4

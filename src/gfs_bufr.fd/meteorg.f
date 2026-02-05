@@ -93,6 +93,7 @@
       real :: t,q,u,v,td,tlcl,plcl,qw,tw,xlat,xlon
       integer,dimension(npoint):: landwater
       integer,dimension(im,jm):: lwmask
+      real,dimension(im,jm):: rlwmask
       real,dimension(im,jm)::  apcp, cpcp
       real,dimension(npoint,2+levs*3):: grids
       real,dimension(npoint) :: rlat,rlon,pmsl,ps,psn,elevstn
@@ -422,9 +423,14 @@
       if (fformat == 'netcdf') then
       VarName='land'
       Zreverse='no'
-       call read_netcdf(ncid,im,jm,1,VarName,lwmask,Zreverse,
+       call read_netcdf(ncid,im,jm,1,VarName,rlwmask,Zreverse,
      &     error)
         if (error /= 0) print*,'lwmask not found'
+        do j=1,jm
+        do i=1,im
+         lwmask(i,j) = nint(rlwmask(i,j))
+        enddo
+        enddo
        endif
         if(debugprint)
      +   print*,'sample land mask= ',lwmask(im/2,jm/4),
@@ -875,7 +881,7 @@ CC due to rounding and interpolation errors, correct it here -G.P. Lou:
           psn(np) = ps(np)
           call sigio_modpr(1,1,levs,nvcoord,idvc,
      &         idsl,vcoord,iret,
-     &         ps=psn(np)*1000,pd=pd3(np,1:levs))
+     &         ps=psn*1000,pd=pd3(np,1:levs))
           grids(np,2) = log(psn(np))
           if(np==11)print*,'station H,grud H,psn,ps,new pm',
      &     elevstn(np),grids(np,1),psn(np),ps(np)

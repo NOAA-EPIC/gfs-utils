@@ -11,6 +11,8 @@ CMAKE_OPTS=${CMAKE_OPTS:-}
 COMPILER=${COMPILER:-"intel"}
 BUILD_DIR=${BUILD_DIR:-"${DIR_ROOT}/build"}
 INSTALL_PREFIX=${INSTALL_PREFIX:-"${DIR_ROOT}/install"}
+COMPILER=${COMPILER,,}
+echo "COMPILER=${COMPILER}"
 
 #==============================================================================#
 

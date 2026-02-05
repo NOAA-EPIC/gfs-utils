@@ -89,10 +89,14 @@ program ocnicepost
            ', '//trim(outvars(n)%var_remapmethod),', '//trim(outvars(n)%var_grid),             &
            ', '//trim(outvars(n)%var_pair),', '//trim(outvars(n)%var_pair_grid)
      end if
-     call nf90_err(nf90_inq_varid(ncid, trim(outvars(n)%var_name), varid), 'get variable Id: '//trim(outvars(n)%var_name))
-     call nf90_err(nf90_get_att(ncid, varid,  'long_name', outvars(n)%long_name), 'get variable attribute: long_name '//trim(outvars(n)%var_name))
-     call nf90_err(nf90_get_att(ncid, varid,      'units', outvars(n)%units), 'get variable attribute: units '//trim(outvars(n)%var_name)        )
-     call nf90_err(nf90_get_att(ncid, varid, '_FillValue', outvars(n)%var_fillvalue), 'get variable attribute: FillValue'//trim(outvars(n)%var_name))
+     call nf90_err(nf90_inq_varid(ncid, trim(outvars(n)%var_name), varid), &
+                                  'get variable Id: '//trim(outvars(n)%var_name))
+     call nf90_err(nf90_get_att(ncid, varid,  'long_name', outvars(n)%long_name), &
+                                'get variable attribute: long_name '//trim(outvars(n)%var_name))
+     call nf90_err(nf90_get_att(ncid, varid,      'units', outvars(n)%units), &
+                                'get variable attribute: units '//trim(outvars(n)%var_name)        )
+     call nf90_err(nf90_get_att(ncid, varid, '_FillValue', outvars(n)%var_fillvalue), &
+                                'get variable attribute: FillValue'//trim(outvars(n)%var_name))
   end do
 
   ! timestamp
